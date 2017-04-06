@@ -3,9 +3,9 @@
 ### BEGIN ADJUSTABLE PARAMETERS ###
 
 # General name of the system to analyze
-allAtomName="0mff-first500ns"
+allAtomName=""
 filename=${allAtomName}"_noPBC"
-ndxName="0mff+gsec+app"
+ndxName=""
 
 start=0     # Start time (ps) for order parameter analysis
 end=5000000 # Stop time (ps) for order parameter analysis
@@ -42,6 +42,14 @@ allAtomPDB=${allAtomName}".pdb"
 # File extension specification for file conversion
 inFormat="xtc"
 outFormat="pdb"
+
+# Create folders
+mkdir data densmap mindist order pdf thickness
+
+# Move non-template files
+mv ${template}avg_order_map.py ${template}order_map.py ${template}parseOrderByFrame.sh ${template}plot_order.py ${oDirectory}
+mv ${template}cylindrical-density.py ${template}plot_pdf.py ${template}plot_pdf-average.py ${pDirectory}
+mv ${template}GridMAT-MD.pl ${template}gmat_thickness.sh ${template}plot_thickness.py
 
 # Generate all analysis scripts
 sed -e "s~FILENAME~${allAtomName}~" ${template}template.convert_xtc.sh | \
