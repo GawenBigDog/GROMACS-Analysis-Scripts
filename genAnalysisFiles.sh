@@ -47,9 +47,9 @@ outFormat="pdb"
 mkdir data densmap mindist order pdf thickness
 
 # Move non-template files
-mv ${template}avg_order_map.py ${template}order_map.py ${template}parseOrderByFrame.sh ${template}plot_order.py ${oDirectory}
-mv ${template}cylindrical-density.py ${template}plot_pdf.py ${template}plot_pdf-average.py ${pDirectory}
-mv ${template}GridMAT-MD.pl ${template}gmat_thickness.sh ${template}plot_thickness.py
+cp ${template}avg_order_map.py ${template}order_map.py ${template}parseOrderByFrame.sh ${template}plot_order.py ${oDirectory}
+cp ${template}cylindrical-density.py ${template}plot_pdf.py ${template}plot_pdf-average.py ${pDirectory}
+cp ${template}GridMAT-MD.pl ${template}gmat_thickness.sh ${template}plot_thickness.py ${tDirectory}
 
 # Generate all analysis scripts
 sed -e "s~FILENAME~${allAtomName}~" ${template}template.convert_xtc.sh | \
@@ -93,6 +93,9 @@ chmod +x data/merge.sh
 chmod +x ${mDirectory}mindist.sh
 chmod +x ${oDirectory}batchOrder.sh
 chmod +x ${pDirectory}run-pdf.sh
+chmod +x ${oDirectory}parseOrderByFrame.sh
+chmod +x ${tDirectory}gmat_thickness.sh
+
 
 echo
 echo "To properly run all the scripts, first run the following: "
