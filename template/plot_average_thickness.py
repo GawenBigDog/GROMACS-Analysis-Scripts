@@ -6,29 +6,43 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import scipy
 import scipy.interpolate
-#import seaborn as sns
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.stderr.write("Usage: %s <datafile>\n")
+    if len(sys.argv) != 3:
+        sys.stderr.write("Usage: %s <# of Files> <# Nodes in one direction>\n")
         sys.exit()
-        
-datafile = sys.argv[1]
 
-x = []
-y = []
-thickness = []
+nFiles = int(sys.argv[1])
+N = int(sys.argv[2])
 
-f = open(datafile,'r')
-lines = f.readlines()
-i=0
-print len(lines)
-for f0 in lines:
-    x.append(f0.split()[1])
-    y.append(f0.split()[2])
-    thickness.append(f0.split()[3])
-f.close()
-        
+nNodes = N * N
+
+x = [0] * nNodes
+y = [0] * nNodes
+thickness = [0] * nNodes
+
+k = 0
+while k <= nFiles:
+
+    f = open(str(k)+'.dat','r')
+    lines = f.readlines()
+    
+    i=0
+    for line in lines:
+        x[i] += float(line.split()[1])
+        y[i] += float(line.split()[2])
+        thickness[i] += float(line.split()[3])
+        i += 1
+    f.close()
+    k += 1
+
+i = 0
+while i < nNodes:
+    x[i] = x[i] / nFiles
+    y[i] = y[i] / nFiles
+    thickness[i] = thickness[i] / nFiles
+    i += 1
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
@@ -44,7 +58,7 @@ p = plt.imshow(thickness_i,
                origin='lower',
                cmap = cm.jet,
                extent=[np.min(x), np.max(x), np.min(y), np.max(y)],
-               interpolation='none')
+               interpolation='nearest')
 
 #thickness = np.ma.masked_equal(thickness,0)
 #p = plt.pcolor(x, y, thickness,
